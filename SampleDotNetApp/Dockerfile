@@ -6,5 +6,5 @@ WORKDIR /SampleDotNetApp
 # Copy the application files to the container
 COPY ./MyApp .
 
-# Set the entry point to run the application
-ENTRYPOINT ["dotnet", "\bin\Debug\net7.0\MyApp.dll"]
+# # Set the entry point to run the application
+# ENTRYPOINT ["dotnet", "\bin\Debug\net7.0\MyApp.dll"]
