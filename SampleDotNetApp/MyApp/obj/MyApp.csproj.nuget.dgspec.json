@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\musketeer\\Documents\\saipriyankareferences\\Issuepackgebuilder-triyanshu\\MyApp\\MyApp.csproj": {}
+    "C:\\Users\\musketeer\\Documents\\saipriyankareferences\\Issuepackgebuilder-triyanshu\\SampleDotNetApp\\MyApp\\MyApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\musketeer\\Documents\\saipriyankareferences\\Issuepackgebuilder-triyanshu\\MyApp\\MyApp.csproj": {
+    "C:\\Users\\musketeer\\Documents\\saipriyankareferences\\Issuepackgebuilder-triyanshu\\SampleDotNetApp\\MyApp\\MyApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\musketeer\\Documents\\saipriyankareferences\\Issuepackgebuilder-triyanshu\\MyApp\\MyApp.csproj",
+        "projectUniqueName": "C:\\Users\\musketeer\\Documents\\saipriyankareferences\\Issuepackgebuilder-triyanshu\\SampleDotNetApp\\MyApp\\MyApp.csproj",
         "projectName": "MyApp",
-        "projectPath": "C:\\Users\\musketeer\\Documents\\saipriyankareferences\\Issuepackgebuilder-triyanshu\\MyApp\\MyApp.csproj",
+        "projectPath": "C:\\Users\\musketeer\\Documents\\saipriyankareferences\\Issuepackgebuilder-triyanshu\\SampleDotNetApp\\MyApp\\MyApp.csproj",
         "packagesPath": "C:\\Users\\musketeer\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\musketeer\\Documents\\saipriyankareferences\\Issuepackgebuilder-triyanshu\\MyApp\\obj\\",
+        "outputPath": "C:\\Users\\musketeer\\Documents\\saipriyankareferences\\Issuepackgebuilder-triyanshu\\SampleDotNetApp\\MyApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\musketeer\\AppData\\Roaming\\NuGet\\NuGet.Config"
