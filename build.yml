@@ -1,0 +1,43 @@
+name: Build & Push Container
+
+on:
+  workflow_dispatch
+
+permissions:
+      id-token: write
+      contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
+      
+      - name: Build project
+        run: dotnet publish -r linux-x64 -o build -p:PublishSingleFile=true
+
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     role-to-assume: ???
+      #     aws-region: eu-west-2
+      # 
+      # - name: Authenticate with ECR
+      #   run: aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin ???
+      # 
+      # - name: Docker build
+      #   run: docker build -t ??? .
+      # 
+      # - name: Docker tag
+      #   run: docker tag article-polling-service:latest ???
+      # 
+      # - name: Docker push
+      #   run: docker push ???
