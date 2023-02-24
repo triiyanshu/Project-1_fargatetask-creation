@@ -5,7 +5,7 @@ ADD /SampleDotNetApp/MyApp /app/MyApp
 WORKDIR /SampleDotNetApp
 
 # Copy the myapp to the container
-COPY .SampleDotNetApp/MyApp .
+# COPY .SampleDotNetApp/MyApp .
 
 # entry point
 # ENTRYPOINT ["dotnet", "\bin\Debug\net7.0\MyApp.dll"]
