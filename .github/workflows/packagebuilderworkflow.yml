@@ -53,9 +53,8 @@ jobs:
           else
             LATEST_TAG=$(echo $TIMESTAMP | tr ' ' '\n' | sort -nr | head -n 1)
           fi
-          REPO_URL=$(140561047603.dkr.ecr.eu-west-2.amazonaws.com)
-          docker tag packagebuildert:$LATEST_TAG $REPO_URL/packagebuildert:$TIMESTAMP
-          docker tag packagebuildert:$TIMESTAMP $REPO_URL/packagebuildert:latest
+          docker tag packagebuildert:$LATEST_TAG 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:$TIMESTAMP
+          docker tag packagebuildert:$TIMESTAMP 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
 
       # - name: Tag Docker Image
       #   run: |
