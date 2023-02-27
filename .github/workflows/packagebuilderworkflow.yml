@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'dev/prod'
+        description: 'Test/Prod'
         required: true
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
       - name: Install AWS CLI
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-pip
+          # sudo apt-get install -y python3-pip
           sudo pip3 install awscli
 
 
