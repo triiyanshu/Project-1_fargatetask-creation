@@ -54,14 +54,17 @@ jobs:
             LATEST_TAG=$(echo $TIMESTAMP | tr ' ' '\n' | sort -nr | head -n 1)
           fi
           docker tag packagebuildert:$LATEST_TAG 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:$TIMESTAMP
-          docker tag packagebuildert:$TIMESTAMP 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
+        # docker tag packagebuildert:$TIMESTAMP 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
 
       # - name: Tag Docker Image
       #   run: |
       #     docker tag packagebuildert:$TIMESTAMP 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:$TIMESTAMP
 
       - name: Push Docker Image
-        run: docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
+        # run: docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
+        docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:$TIMESTAMP
+        # docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
+
 
       # - name: Create Fargate Task
       #   run: aws ecs update-service --cluster my-cluster --service my-service --task-definition task-definition.json
