@@ -59,9 +59,8 @@ jobs:
 
       - name: Tag Docker Image
         run: |
-          REPO_URL="140561047603.dkr.ecr.eu-west-2.amazonaws.com"
-          docker tag packagebuildert:$TIMESTAMP $REPO_URL/packagebuildert:$TIMESTAMPS
-          docker tag packagebuildert:$TIMESTAMP $REPO_URL/packagebuildert:latest
+          docker tag packagebuildert:$TIMESTAMP 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:$TIMESTAMPS
+          docker tag packagebuildert:$TIMESTAMP 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
 
       - name: Push Docker Image
         run: docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
