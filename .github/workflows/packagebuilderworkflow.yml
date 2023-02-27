@@ -28,39 +28,33 @@ jobs:
       - name: Install AWS CLI
         run: |
           sudo apt-get update
-          # sudo apt-get install -y python3-pip
           sudo pip3 install awscli
 
 
-      - name: Configure AWS credentials
+      - name: AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: arn:aws:iam::140561047603:role/github-action-role
           aws-region: eu-west-2
 
-      # - name: Authenticate with ECR
-      #   run: aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 140561047603.dkr.ecr.eu-west-2.amazonaws.com
-      - name: Login to Amazon ECR
+      - name: Login to ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build Docker Image
-        run: |
-          TIMESTAMP=$(date +%Y%m%d%H%M%S)
-          docker build -t packagebuildert:$TIMESTAMP .
-
-      - name: Tag Docker Image
-        run: |
-          docker tag packagebuildert:$TIMESTAMP 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:$TIMESTAMP
+      # - name: Build Docker Image
+      #   run: |
+      #     TIMESTAMP=$(date +%Y%m%d%H%M%S)
+      #     docker build -t packagebuildert:$TIMESTAMP .
 
       # - name: Tag Docker Image
       #   run: |
       #     docker tag packagebuildert:$TIMESTAMP 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:$TIMESTAMP
 
-      - name: Push Docker Image
-        run: docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
-        # docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
-
-
-      # - name: Create Fargate Task
-      #   run: aws ecs update-service --cluster my-cluster --service my-service --task-definition task-definition.json
+      # - name: Push Docker Image
+      #   run: docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
+      - name: Build, tag, and push image to Amazon ECR
+        uses: docker/build-push-action@v2
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: packagebuildert
+          IMAGE_TAG: sample_image
