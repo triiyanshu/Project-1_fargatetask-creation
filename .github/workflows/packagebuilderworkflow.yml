@@ -45,16 +45,29 @@ jobs:
           TIMESTAMP=$(date +%Y%m%d%H%M%S)
           docker build -t packagebuildert:$TIMESTAMP .
 
+      # - name: Tag Docker Image
+      #   run: |
+      #     TIMESTAMPS=$(aws ecr list-images --repository-name packagebuildert --region eu-west-2 --filter tagStatus=UNTAGGED --query 'imageIds[*].imageTag' --output text)
+      #     if [ -z "$TIMESTAMPS" ]; then
+      #       LATEST_TAG="latest"
+      #     else
+      #       LATEST_TAG=$(echo $TIMESTAMPS | tr ' ' '\n' | sort -nr | head -n 1)
+      #     fi
+      #     REPO_URL="140561047603.dkr.ecr.eu-west-2.amazonaws.com"
+      #     docker tag packagebuildert:$LATEST_TAG $REPO_URL/packagebuildert:$TIMESTAMP
+      #     docker tag packagebuildert:$TIMESTAMP $REPO_URL/packagebuildert:latest
+
       - name: Tag Docker Image
         run: |
-          TIMESTAMPS=$(aws ecr list-images --repository-name packagebuildert --region eu-west-2 --filter tagStatus=UNTAGGED --query 'imageIds[*].imageTag' --output text)
+          REPO_URL="140561047603.dkr.ecr.eu-west-2.amazonaws.com"
+          docker tag packagebuildert:$TIMESTAMP $REPO_URL/packagebuildert:$TIMESTAMPS
+
+          TIMESTAMPS=$(aws ecr list-images --repository-name packagebuildert --region eu-west-2 --query 'imageIds[*].imageTag' --output text)
           if [ -z "$TIMESTAMPS" ]; then
             LATEST_TAG="latest"
           else
             LATEST_TAG=$(echo $TIMESTAMPS | tr ' ' '\n' | sort -nr | head -n 1)
           fi
-          REPO_URL="140561047603.dkr.ecr.eu-west-2.amazonaws.com"
-          docker tag packagebuildert:$LATEST_TAG $REPO_URL/packagebuildert:$TIMESTAMP
           docker tag packagebuildert:$TIMESTAMP $REPO_URL/packagebuildert:latest
 
       - name: Push Docker Image
