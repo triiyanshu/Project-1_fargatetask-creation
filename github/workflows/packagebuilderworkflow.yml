@@ -14,13 +14,6 @@ jobs:
       id-token: write
       contents: read
 
-    # env:
-    #   ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-    #   ECR_REPOSITORY: issuepackagebuilder
-    #   AWS_REGION: ${{ secrets.AWS_REGION }}
-    #   ENVIRONMENT: ${{ github.event.inputs.environment }}
-    #   IMAGE_TAG: ${{ github.sha }}
-
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
@@ -38,15 +31,6 @@ jobs:
           sudo apt-get install -y python3-pip
           sudo pip3 install awscli
 
-      - name: Install Docker
-        run: |
-          sudo apt install apt-transport-https ca-certificates curl software-properties-common
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-          sudo apt update
-          apt-cache policy docker-ce
-          sudo apt install docker-ce
-          sudo systemctl status docker
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -57,10 +41,20 @@ jobs:
         run: aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 140561047603.dkr.ecr.eu-west-2.amazonaws.com
 
       - name: Build Docker Image
-        run: docker build -t packagebuildert .
+        run: |
+          TIMESTAMP=$(date +%Y%m%d%H%M%S)
+          docker build -t packagebuildert:$TIMESTAMP .
 
       - name: Tag Docker Image
-        run: docker tag packagebuildert:latest 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
+        run: |
+          TIMESTAMPS=$(aws ecr list-images --repository-name packagebuildert --region eu-west-2 --filter tagStatus=UNTAGGED --query 'imageIds[*].imageTag' --output text)
+          if [ -z "$TIMESTAMPS" ]; then
+            LATEST_TAG="latest"
+          else
+            LATEST_TAG=$(echo $TIMESTAMPS | tr ' ' '\n' | sort -nr | head -n 1)
+          fi
+          docker tag packagebuildert:$LATEST_TAG 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:$TIMESTAMP
+          docker tag packagebuildert:$TIMESTAMP 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
 
       - name: Push Docker Image
         run: docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
