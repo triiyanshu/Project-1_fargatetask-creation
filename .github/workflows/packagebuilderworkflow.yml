@@ -47,21 +47,14 @@ jobs:
 
       - name: Tag Docker Image
         run: |
-          TIMESTAMP=$(aws ecr list-images --repository-name packagebuildert --region eu-west-2 --filter tagStatus=UNTAGGED --query 'imageIds[*].imageTag' --output text)
-          if [ -z "$TIMESTAMP" ]; then
-            LATEST_TAG="latest"
-          else
-            LATEST_TAG=$(echo $TIMESTAMP | tr ' ' '\n' | sort -nr | head -n 1)
-          fi
-          docker tag packagebuildert:$LATEST_TAG 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:$TIMESTAMP
-        # docker tag packagebuildert:$TIMESTAMP 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
+          docker tag packagebuildert:$TIMESTAMP 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:$TIMESTAMP
 
       # - name: Tag Docker Image
       #   run: |
       #     docker tag packagebuildert:$TIMESTAMP 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:$TIMESTAMP
 
       - name: Push Docker Image
-        run: docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
+        run: docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:$TIMESTAMP
         # docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
 
 
