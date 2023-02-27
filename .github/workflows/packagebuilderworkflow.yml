@@ -37,8 +37,12 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::140561047603:role/github-action-role
           aws-region: eu-west-2
-      - name: Authenticate with ECR
-        run: aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 140561047603.dkr.ecr.eu-west-2.amazonaws.com
+
+      # - name: Authenticate with ECR
+      #   run: aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 140561047603.dkr.ecr.eu-west-2.amazonaws.com
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
       - name: Build Docker Image
         run: |
