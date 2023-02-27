@@ -61,8 +61,7 @@ jobs:
       #     docker tag packagebuildert:$TIMESTAMP 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:$TIMESTAMP
 
       - name: Push Docker Image
-        # run: docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
-        docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:$TIMESTAMP
+        run: docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
         # docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
 
 
