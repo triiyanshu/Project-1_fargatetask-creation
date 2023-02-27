@@ -1,4 +1,4 @@
-name: Build and Deploy Docker Image to Amazon ECR and Fargate
+name: Build and Deploy Docker Image to ECR (packagebuildert)
 
 on:
   workflow_dispatch:
@@ -54,7 +54,7 @@ jobs:
       #     docker tag packagebuildert:$TIMESTAMP 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:$TIMESTAMP
 
       - name: Push Docker Image
-        run: docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:$TIMESTAMP
+        run: docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
         # docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
 
 
