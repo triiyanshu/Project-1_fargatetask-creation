@@ -53,4 +53,4 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: packagebuildert
-          IMAGE_TAG: ${{ steps.extract-ticket-number.outputs.ticket_number }} .
+          IMAGE_TAG: ${{ steps.extract-ticket-number.outputs.ticket_number }}
