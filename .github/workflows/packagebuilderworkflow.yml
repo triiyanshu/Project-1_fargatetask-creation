@@ -20,6 +20,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Extract Jira ticket number
+        id: extract-ticket-number
+        run: echo "::set-output name=ticket_number::$(echo ${GITHUB_REF#refs/heads/jira-})"  
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
@@ -41,20 +45,9 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      # - name: Build Docker Image
-      #   run: |
-      #     TIMESTAMP=$(date +%Y%m%d%H%M%S)
-      #     docker build -t packagebuildert:$TIMESTAMP .
-
-      # - name: Tag Docker Image
-      #   run: |
-      #     docker tag packagebuildert:$TIMESTAMP 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:$TIMESTAMP
-
-      # - name: Push Docker Image
-      #   run: docker push 140561047603.dkr.ecr.eu-west-2.amazonaws.com/packagebuildert:latest
       - name: Build, tag, and push image to Amazon ECR
         uses: docker/build-push-action@v2
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: packagebuildert
-          IMAGE_TAG: sample_image
+          IMAGE_TAG: ${{ steps.extract-ticket-number.outputs.ticket_number }} .
