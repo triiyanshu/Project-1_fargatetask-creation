@@ -50,6 +50,7 @@ jobs:
         with:
           context: .
           push: true
+          tags: |
            ${{ steps.login-ecr.outputs.registry }}/packagebuildert:${{ steps.extract-ticket-number.outputs.ticket_number }}
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
