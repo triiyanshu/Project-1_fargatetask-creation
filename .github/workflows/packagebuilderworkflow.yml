@@ -20,9 +20,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Extract Jira ticket number
-        id: extract-ticket-number
-        run: echo "::set-output name=ticket_number::$(echo ${GITHUB_REF#refs/heads/jira-} | tr '[:upper:]' '[:lower:]' | tr '/' '-' | cut -c12-)"
+      
 
 
       - name: Setup .NET
@@ -45,6 +43,14 @@ jobs:
       - name: Login to ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+        
+      - name: Extract Jira ticket number
+        id: extract-ticket-number
+        run: echo "::set-output name=ticket_number::$(echo ${GITHUB_REF#refs/heads/jira-} | tr '[:upper:]' '[:lower:]' | tr '/' '-' | cut -c12-)"
+
+      - name: Set TIMESTAMP variable
+        run: |
+          export TIMESTAMP=$(date +%Y%m%d%H%M%S)  
 
       - name: Build, tag, and push image to Amazon ECR
         uses: docker/build-push-action@v2
