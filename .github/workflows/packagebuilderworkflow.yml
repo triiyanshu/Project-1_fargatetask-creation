@@ -22,7 +22,7 @@ jobs:
 
       - name: Extract Jira ticket number
         id: extract-ticket-number
-        run: echo "::set-output name=ticket_number::$(echo ${GITHUB_REF#refs/heads/jira-} | sed -nE 's#^jira-([A-Z]+[0-9]+).*#\1#p' | tr '[:upper:]' '[:lower:]' | tr '/' '-' | cut -c6-)"
+        run: echo "::set-output name=ticket_number::$(echo ${GITHUB_REF#refs/heads/jira-} | tr '[:upper:]' '[:lower:]' | tr '/' '-' | cut -c12-)"
 
 
       - name: Setup .NET
