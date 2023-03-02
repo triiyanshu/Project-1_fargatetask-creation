@@ -56,8 +56,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}::${{ GITHUB_REF#refs/heads/jira- }}-${{ steps.extract-ticket-number.outputs.ticket_number }}
-            #${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ steps.extract-ticket-number.outputs.ticket_number }}
+            #${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}::${{ GITHUB_REF#refs/heads/jira- }}-${{ steps.extract-ticket-number.outputs.ticket_number }}
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ steps.extract-ticket-number.outputs.ticket_number }}
             ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
 
           build-args: |
