@@ -20,11 +20,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Extract Jira ticket number
-        id: extract-ticket-number
-        run: echo "::set-output name=ticket_number::$(echo ${GITHUB_REF#refs/heads/jira-} | tr '[:upper:]' '[:lower:]' | tr '/' '-' | cut -c12-)"
-
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
@@ -45,21 +40,31 @@ jobs:
       - name: Login to ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+        
+      - name: Extract Jira ticket number
+        id: extract-ticket-number
+        run: echo "::set-output name=ticket_number::$(echo ${GITHUB_REF#refs/heads/jira-} | tr '[:upper:]' '[:lower:]' | tr '/' '-' | cut -c12-)"
 
+      - name: Set TIMESTAMP variable
+        id: set-timestamp
+        run: echo "::set-output name=timestamp::$(date +%Y%m%d-%H%M%S)"
+        
+        
       - name: Build, tag, and push image to Amazon ECR
         uses: docker/build-push-action@v2
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: packagebuildert
-          #IMAGE_TAG: ${{ steps.extract-ticket-number.outputs.ticket_number }}
         with:
           context: .
           push: true
           tags: |
-            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ steps.extract-ticket-number.outputs.ticket_number }}-${{ github.event.inputs.environment }}-${{ github.run_number }}-${{ github.run_id }}-${{ github.sha }}
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.event.inputs.environment }}-${{ github.run_number }}-${{ github.run_id }}-${{ github.sha }}
             ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ steps.extract-ticket-number.outputs.ticket_number }}
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ steps.set-timestamp.outputs.timestamp }}
             ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
 
           build-args: |
             JIRA_TICKET_NUMBER=${{ steps.extract-ticket-number.outputs.ticket_number }}
+            TIMESTAMP=${{ steps.set-timestamp.outputs.timestamp }}
         
