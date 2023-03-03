@@ -1,0 +1,75 @@
+name: Build and Deploy Docker Image to ECR (packagebuildert)
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Test/Prod'
+        required: true
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Extract Jira ticket number
+        id: extract-ticket-number
+        run: echo "::set-output name=ticket_number::$(echo ${GITHUB_REF#refs/heads/jira-} | tr '[:upper:]' '[:lower:]')"  
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
+
+      # - name: Install AWS CLI
+      #   run: |
+      #     sudo apt-get update
+      #     sudo pip3 install awscli
+
+
+      - name: AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::140561047603:role/github-action-role
+          aws-region: eu-west-2
+
+      - name: Login to ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push the image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: packagebuildert
+          IMAGE_TAG: ${{ steps.extract-ticket-number.outputs.ticket_number }}
+        run: |
+          Build a docker container and push it to ECR 
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          echo "Pushing image to ECR..."
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      # - name: Build, tag, and push image to Amazon ECR
+      #   uses: docker/build-push-action@v2
+      #   env:
+      #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      #     ECR_REPOSITORY: packagebuildert
+      #     #IMAGE_TAG: ${{ steps.extract-ticket-number.outputs.ticket_number }}
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: |
+      #       ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.ref }}
+      #       ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ steps.extract-ticket-number.outputs.ticket_number }}
+      #       ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
+      #     build-args: |
+      #       JIRA_TICKET_NUMBER=${{ steps.extract-ticket-number.outputs.ticket_number }}
+        
