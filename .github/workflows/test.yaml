@@ -1,4 +1,4 @@
-name: Build and Deploy Docker Image to ECR (packagebuildert)
+name: 2 Build and Deploy Docker Image to ECR (packagebuildert)
 
 on:
   workflow_dispatch:
