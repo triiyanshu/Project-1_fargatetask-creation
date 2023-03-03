@@ -18,6 +18,11 @@ jobs:
       contents: read
     
     steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          
       - name: Extract Jira ticket number
         id: extract-ticket-number
         run: echo "::set-output name=ticket_number::$(echo ${GITHUB_REF#refs/heads/jira-} | tr '[:upper:]' '[:lower:]' | tr '/' '-' | cut -c12-)"
