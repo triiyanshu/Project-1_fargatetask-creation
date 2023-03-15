@@ -1,0 +1,12 @@
+name: 'Books Dev Terraform'
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Test/Prod'
+        required: true
+        #default: 'Default value'
+  push:
+    branches: 
+      - main
+      - ISPB-4.0.1 
