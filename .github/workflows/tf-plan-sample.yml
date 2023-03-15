@@ -1,10 +1,5 @@
 name: 'Books Dev Terraform'
 
-# env:
-#         AUTH0_DOMAIN: "dev-rsc.eu.auth0.com" 
-#         AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
-#         AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
-
 on:
   workflow_dispatch:
     inputs:
@@ -34,7 +29,7 @@ jobs:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::881182946192:role/cd-dev-iam-role-deploy
+          role-to-assume: arn:aws:iam:::role/cd-dev-iam-role-deploy
           aws-region: eu-west-2
 
       # - name: Show assumed role
