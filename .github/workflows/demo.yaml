@@ -1,4 +1,4 @@
-name: 'Books Dev Terraform'
+name: 'Books Dev Terraform3'
 on:
   workflow_dispatch:
     inputs:
