@@ -6,6 +6,7 @@ on:
       environment:
         description: 'Test/Prod'
         required: true
+        default: 'Default value'
 
     
     
